@@ -6,6 +6,16 @@
 #   | 1 | 2 | 3 |
 #   |---|---|---|
 #   | 1 | 2 | 3 |
+#
+
+if [[ ${#} != 2 ]]; then
+    echo
+    echo "tab <rows> <columns>"
+    echo "EXAMPLE: tab 3 2"
+    echo
+    exit
+fi;
+
 
 COLS=$1
 ROWS=$2
