@@ -1,9 +1,10 @@
 #! /bin/bash
 #
+# USE: pdfnotes example.pdf
+#
 # Help turning a PDF of lecture slides into
 # a markdown file, ready to use for note-taking.
-#
-# USE: pdfnotes example.pdf
+# Aimed at bullet-point presentations
 #
 # It is just a series of steps I use to prep a
 # PowerPoint ready for note-taking in lectures.
@@ -13,6 +14,12 @@
 # markdown file, this is not what you want.
 
 FILENAME=${1}
+BASENAME=$( echo ${1} | cut -d '.' -f 1 )
+EXTENSION=$( echo ${1} | cut -d '.' -f 2 )
+
+echo "file name: ${FILENAME}"
+echo "base name: ${BASENAME}"
+echo "extension: ${EXTENSION}"
 
 # Check for just one argument
 if [[ ${#} != 1 ]]; then
@@ -23,7 +30,16 @@ if [[ ${#} != 1 ]]; then
     exit
 fi;
 
-pdftotext ${1} lecture.markdown
+# Check file extension
+if [[ ${EXTENSION} != "pdf" ]]; then
+    echo
+    echo "File must be a pdf"
+    echo "EXAMPLE: filename.pdf"
+    echo
+    exit
+fi;
+
+pdftotext ${1} ${BASENAME}.markdown
 
 # Replace strage bullet points at start of line
 sed -i "s/^[^a-zA-Z0-9]/  + /" lecture.markdown
