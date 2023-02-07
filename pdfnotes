@@ -1,0 +1,30 @@
+#! /bin/bash
+#
+# Help turning a PDF of lecture slides into
+# a markdown file, ready to use for note-taking.
+#
+# USE: pdfnotes example.pdf
+#
+# It is just a series of steps I use to prep a
+# PowerPoint ready for note-taking in lectures.
+# The PowerPoint must be exported as a pdf, first
+#
+# If you are looking to convert a PDF to a
+# markdown file, this is not what you want.
+
+if [[ ${#} != 1 ]]; then
+    echo
+    echo "Enter pdf filename"
+    echo "EXAMPLE: pdfnotes test.pdf"
+    echo
+    exit
+fi;
+
+FILENAME={$1}
+pdftotext lecture.pdf lecture.markdown
+# Replace strage bullet points at start of line
+sed -i 's/^[^a-zA-Z0-9]/  + /' $FILENAME
+
+# Add indent to lines starting with lower case
+sed -i '/^[a-z]/ s/^/    /' lecture.markdown
+# sed -i '/STATD_PORT/ s/^/#/' /tmp/file
