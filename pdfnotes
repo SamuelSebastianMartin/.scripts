@@ -16,6 +16,7 @@
 FILENAME=${1}
 BASENAME=$( echo ${1} | cut -d '.' -f 1 )
 EXTENSION=$( echo ${1} | cut -d '.' -f 2 )
+OUTNAME=${BASENAME}.markdown
 
 echo "file name: ${FILENAME}"
 echo "base name: ${BASENAME}"
@@ -39,11 +40,11 @@ if [[ ${EXTENSION} != "pdf" ]]; then
     exit
 fi;
 
-pdftotext ${1} ${BASENAME}.markdown
+pdftotext ${1} ${OUTNAME}
 
 # Replace strage bullet points at start of line
-sed -i "s/^[^a-zA-Z0-9]/  + /" lecture.markdown
+sed -i "s/^[^a-zA-Z0-9]/  + /" ${OUTNAME}
 
 # Add indent to lines starting with lower case
-sed -i '/^[a-z]/ s/^/    /' lecture.markdown
+sed -i '/^[a-z]/ s/^/    /' ${OUTNAME}
 # sed -i '/STATD_PORT/ s/^/#/' /tmp/file
