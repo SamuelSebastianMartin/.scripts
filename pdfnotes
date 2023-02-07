@@ -12,6 +12,9 @@
 # If you are looking to convert a PDF to a
 # markdown file, this is not what you want.
 
+FILENAME=${1}
+
+# Check for just one argument
 if [[ ${#} != 1 ]]; then
     echo
     echo "Enter pdf filename"
@@ -20,10 +23,10 @@ if [[ ${#} != 1 ]]; then
     exit
 fi;
 
-FILENAME={$1}
-pdftotext lecture.pdf lecture.markdown
+pdftotext ${1} lecture.markdown
+
 # Replace strage bullet points at start of line
-sed -i 's/^[^a-zA-Z0-9]/  + /' $FILENAME
+sed -i "s/^[^a-zA-Z0-9]/  + /" lecture.markdown
 
 # Add indent to lines starting with lower case
 sed -i '/^[a-z]/ s/^/    /' lecture.markdown
