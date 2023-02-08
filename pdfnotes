@@ -41,7 +41,11 @@ mkdir ${BASENAME}
 mv ${BASENAME}.* ./${BASENAME}
 cd ${BASENAME}
 
+# Convert to text
 pdftotext ${1} ${OUTNAME}
+
+# Extract images (as lec-001.png, lec-002.png)
+pdfimages -png ${FILENAME} lec
 
 # Replace strage bullet points at start of line
 sed -i "s/^[^a-zA-Z0-9]/  + /" ${OUTNAME}
