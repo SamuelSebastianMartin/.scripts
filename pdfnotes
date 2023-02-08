@@ -18,10 +18,6 @@ BASENAME=$( echo ${1} | cut -d '.' -f 1 )
 EXTENSION=$( echo ${1} | cut -d '.' -f 2 )
 OUTNAME=${BASENAME}.markdown
 
-echo "file name: ${FILENAME}"
-echo "base name: ${BASENAME}"
-echo "extension: ${EXTENSION}"
-
 # Check for just one argument
 if [[ ${#} != 1 ]]; then
     echo
@@ -40,6 +36,11 @@ if [[ ${EXTENSION} != "pdf" ]]; then
     exit
 fi;
 
+# Set up directory for files
+mkdir ${BASENAME}
+mv ${BASENAME}.* ./${BASENAME}
+cd ${BASENAME}
+
 pdftotext ${1} ${OUTNAME}
 
 # Replace strage bullet points at start of line
@@ -47,4 +48,5 @@ sed -i "s/^[^a-zA-Z0-9]/  + /" ${OUTNAME}
 
 # Add indent to lines starting with lower case
 sed -i '/^[a-z]/ s/^/    /' ${OUTNAME}
-# sed -i '/STATD_PORT/ s/^/#/' /tmp/file
+
+cd ..
