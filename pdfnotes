@@ -14,8 +14,11 @@
 # markdown file, this is not what you want.
 
 FILENAME=${1}
-BASENAME=$( echo ${1} | cut -d '.' -f 1 )
-EXTENSION=$( echo ${1} | cut -d '.' -f 2 )
+EXTENSION=${FILENAME: -3}
+BASENAME=$(basename -s .pdf ${FILENAME})
+# remove possible '.' from name of directory
+echo ${DIRECTORY}
+DIRECTORY=$(echo "${BASENAME}" | sed 's/\./_/g')
 OUTNAME=${BASENAME}.markdown
 
 # Check for just one argument
@@ -37,9 +40,9 @@ if [[ ${EXTENSION} != "pdf" ]]; then
 fi;
 
 # Set up directory for files
-mkdir ${BASENAME}
-mv ${BASENAME}.* ./${BASENAME}
-cd ${BASENAME}
+mkdir ${DIRECTORY}
+mv ${BASENAME}.* ./${DIRECTORY}
+cd ${DIRECTORY}
 
 # Convert to text
 pdftotext ${1} ${OUTNAME}
@@ -54,3 +57,5 @@ sed -i "s/^[^a-zA-Z0-9]/  + /" ${OUTNAME}
 sed -i '/^[a-z]/ s/^/    /' ${OUTNAME}
 
 cd ..
+
+#  basename -s .pdf ${FILENAME}
