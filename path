@@ -1,0 +1,11 @@
+#! /bin/bash
+# Echoes $PATH in a readable way
+
+# EXPLANATION:
+#     / -> replace
+#     // -> replace every occurance
+#     //: -> replace every occurance of colon
+#     //:/ -> replace every occurance of colon with
+#     \\n -> new line (\ is escaped with and extra \)
+
+echo -e ${PATH//:/\\n}
