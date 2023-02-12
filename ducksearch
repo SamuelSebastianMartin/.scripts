@@ -6,7 +6,7 @@
 # Alias to '?' for searhes.
 
 # Set URL of search engine
-BASE_URL='https://duckduckgo.com/lite/'
+BASE_URL='https://lite.duckduckgo.com/lite/'
 
 # Begin search string
 SRCH='?q='
