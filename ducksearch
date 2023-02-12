@@ -21,4 +21,4 @@ SRCH=${SRCH::-1}
 
 URL="${BASE_URL}${SRCH}"
 
-lynx -accept_all_cookies -scrollbar ${URL}
+lynx ${URL}
