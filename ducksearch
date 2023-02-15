@@ -12,7 +12,7 @@ BASE_URL='https://lite.duckduckgo.com/lite/'
 SRCH='?q='
 
 # Append arguments to search string
-for arg in ${@}; do
+for arg in "${@}"; do
     SRCH+="${arg}+";
 done
 
@@ -21,4 +21,4 @@ SRCH=${SRCH::-1}
 
 URL="${BASE_URL}${SRCH}"
 
-lynx ${URL}
+lynx "${URL}"

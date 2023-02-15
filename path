@@ -8,4 +8,4 @@
 #     //:/ -> replace every occurance of colon with
 #     \\n -> new line (\ is escaped with and extra \)
 
-echo -e ${PATH//:/\\n}
+echo -e "${PATH//:/\\n}"
