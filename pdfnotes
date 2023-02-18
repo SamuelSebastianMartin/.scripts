@@ -1,10 +1,20 @@
 #! /bin/bash
 #
 # USE: pdfnotes example.pdf
+# USE: for n in $( ls *pdf ); do pdfnotes $n; done
 #
 # Help turning a PDF of lecture slides into
 # a markdown file, ready to use for note-taking.
 # Aimed at bullet-point presentations
+#
+# For every .PDF file, it:
+#  -makes a new directory with the same name,
+#   and moves all similarly
+#   named files into that directory.
+#  -The text of the pdf is saved as `.markdown`,
+#   and loosely formatted.
+#  -Images are extracted as png files in the
+#   same directory, numberer 001.png, 002png etc.
 #
 # It is just a series of steps I use to prep a
 # PowerPoint ready for note-taking in lectures.
