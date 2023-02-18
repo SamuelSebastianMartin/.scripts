@@ -19,7 +19,7 @@ if [[ "${!#}" =~ ^[0-9]*$ ]]; then
     imageNo="${!#}"    # last argument - or ${@:$#}
     caption=${*%"${!#}"} # all except last argument
     imageNo=$(printf %03d "$imageNo") # zero-pad the number
-    substitution="![${caption}](${imageNo}.png)"
+    substitution="![${caption}](lec-${imageNo}.png)"
 fi
 
 echo "$substitution"
