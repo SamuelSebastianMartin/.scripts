@@ -25,10 +25,10 @@
 
 FILENAME=${1}
 EXTENSION=${FILENAME: -3}
-BASENAME=$(basename -s .pdf ${FILENAME})
+BASENAME=$(basename -s .pdf "${FILENAME}")
 # remove possible '.' from name of directory
-echo ${DIRECTORY}
-DIRECTORY=$(echo "${BASENAME}" | sed 's/\./_/g')
+echo "${DIRECTORY}"
+DIRECTORY="${BASENAME//./_}"
 OUTNAME=${BASENAME}.markdown
 
 # Check for just one argument
@@ -50,22 +50,22 @@ if [[ ${EXTENSION} != "pdf" ]]; then
 fi;
 
 # Set up directory for files
-mkdir ${DIRECTORY}
-mv ${BASENAME}.* ./${DIRECTORY}
-cd ${DIRECTORY}
+mkdir "${DIRECTORY}"
+mv "${BASENAME}".* ./"${DIRECTORY}"
+cd "${DIRECTORY}" || exit
 
 # Convert to text
-pdftotext ${1} ${OUTNAME}
+pdftotext "${1}" "${OUTNAME}"
 
 # Extract images (as lec-001.png, lec-002.png)
-pdfimages -png ${FILENAME} lec
+pdfimages -png "${FILENAME}" lec
 
 # Replace strage bullet points at start of line
-sed -i "s/^[^a-zA-Z0-9]/  + /" ${OUTNAME}
+sed -i "s/^[^a-zA-Z0-9]/  + /" "${OUTNAME}"
 
 # Add indent to lines starting with lower case
-sed -i '/^[a-z]/ s/^/    /' ${OUTNAME}
+sed -i '/^[a-z]/ s/^/    /' "${OUTNAME}"
 
 cd ..
 
-#  basename -s .pdf ${FILENAME}
+#  basename -s .pdf "${FILENAME}"
