@@ -20,6 +20,11 @@
 # │Use :.!cmt '   '│
 # └────────────────┘
 
+# Alias to 'cm' in .bashrc
+
 while read -r line; do
     echo "${1:-#} $line"
 done
+
+# To do:
+#    1. Check for filetype to automate the comment character.
