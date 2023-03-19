@@ -1,0 +1,8 @@
+#!/bin/bash
+
+declare Width=54
+
+while read -r text; do
+    [[ ${#text} -gt $Width ]] && echo "TOO_LONG=> ${text}" && exit
+    toilet -f term -F border "   ${text}   "
+done
