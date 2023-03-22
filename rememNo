@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# To remember numbers
+#
+
+DICT="/usr/share/dict/british-english" # dictionary
+GAP="[aeiouhvwxy]"
+m=(
+    [0]="{s,z}"
+    [1]="{d,t}"
+    [2]="n"
+    [3]="{,m}"
+    [4]="r"
+    [5]="l"
+    [6]="{g,j}"
+    [7]="{c,k,q}"
+    [8]="f"
+    [9]="{b,p}"
+)
+NUM=${1:-941}  # 941 default for testing, only
+
+declare letters=()
+
+decodeNumbers(){
+    for (( i=0; i<${#NUM}; i++ )); do
+        letters+=( "${m[$i]}" )
+    done
+}
+
+expandPermutations(){
+    local IFS='' # set no gap between joined array items
+    perms="echo ${letters[*]}"
+    permutations=$(eval $perms)
+    echo $permutations
+    local IFS=' '
+    for i in $permutations; do
+        echo $i
+    done
+}
+
+main(){
+    decodeNumbers
+    expandPermutations
+}
+
+main
+
+# echo \b"${m[9]}"\+"${GAP}""${m[4]}"\+"${GAP}""${m[1]}"\+"${GAP}"\b
+# grep "\bp${GAP}*r\+${GAP}*t\+${GAP}\b" "${DICT}"
