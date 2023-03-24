@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # To remember numbers
-#
+# It searches the default dictionary for a mnemonic 
+# word or phrase
 
 DICT="/usr/share/dict/british-english" # dictionary
 GAP="[aeiouhvwxy]"
@@ -9,7 +10,7 @@ m=(
     [0]="{s,z}"
     [1]="{d,t}"
     [2]="n"
-    [3]="{,m}"
+    [3]="m"
     [4]="r"
     [5]="l"
     [6]="{g,j}"
@@ -20,30 +21,41 @@ m=(
 NUM=${1:-941}  # 941 default for testing, only
 
 declare letters=()
-
-decodeNumbers(){
+numToLetters(){
     for (( i=0; i<${#NUM}; i++ )); do
-        letters+=( "${m[$i]}" )
+        local num="${NUM:$i:1}"
+        echo "num=$num, letter=${m[$num]}"
+        letters="$letters${m[$num]}"
     done
+    echo "${letters[*]}"
+}
+
+getWords(){
+    local regexString="\b${GAP}*\?"
+    for (( i=0; i<${#1}; i++ )); do
+        regexString=$regexString"${1:$i:1}\+${GAP}*"
+    done
+    regexString=$regexString"\b"
+    grep "$regexString" "${DICT}"
+    echo "$regexString"
 }
 
 expandPermutations(){
     local IFS='' # set no gap between joined array items
     perms="echo ${letters[*]}"
-    permutations=$(eval $perms)
-    echo $permutations
+    permutations=$(eval "$perms")
     local IFS=' '
     for i in $permutations; do
-        echo $i
+        getWords "${i}"
     done
 }
 
 main(){
-    decodeNumbers
+    numToLetters
     expandPermutations
 }
 
 main
 
-# echo \b"${m[9]}"\+"${GAP}""${m[4]}"\+"${GAP}""${m[1]}"\+"${GAP}"\b
-# grep "\bp${GAP}*r\+${GAP}*t\+${GAP}\b" "${DICT}"
+# echo "\b${GAP}\+${m[9]}"\+"${GAP}""${m[4]}"\+"${GAP}""${m[1]}"\+"${GAP}\b"
+echo "\b${GAP}*\?p\+${GAP}*r\+${GAP}*t\+${GAP}*\b" "${DICT}"
