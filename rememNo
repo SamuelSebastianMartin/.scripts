@@ -30,8 +30,7 @@ numToLetters(){
 
 expandPermutations(){
     local IFS='' # set no gap between joined array items
-    perms="echo ${letters[*]}"
-    permutations=$(eval "$perms")
+    permutations=$( echo "${letters[*]}" )
     local IFS=' '
     for i in $permutations; do
         getWords "${i}"
@@ -44,7 +43,7 @@ getWords(){
         regexString=$regexString"${1:$i:1}\+${GAP}*"
     done
     regexString=$regexString"\b"
-    grep "$regexString" "${DICT}" | grep -v "'s"
+    grep -i "$regexString" "${DICT}" | grep -v "'s"
 }
 
 main(){
@@ -55,7 +54,6 @@ main(){
 main
 
 # To do
-# * make searching case insensitive to give names, as well.
 # * stop `getWords` being called from within `expandPermutations
 # * 'usage' message on incorrect arguments
 # * build wrapper function that breaks long numbers into
