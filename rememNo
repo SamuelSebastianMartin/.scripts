@@ -5,8 +5,8 @@
 # word or phrase
 
 DICT="/usr/share/dict/british-english" # dictionary
-GAP="[aeiouhvwxy]"
-m=(
+GAP="[aeiouhvwxy]" # Regex to match non-key letters
+numKey=(           # array of all key letters
     [0]="{s,z}"
     [1]="{d,t}"
     [2]="n"
@@ -18,26 +18,14 @@ m=(
     [8]="f"
     [9]="{b,p}"
 )
-NUM=${1:-941}  # 941 default for testing, only
+NUM=${1}
 
-declare letters=()
+declare letters=""
 numToLetters(){
     for (( i=0; i<${#NUM}; i++ )); do
         local num="${NUM:$i:1}"
-        echo "num=$num, letter=${m[$num]}"
-        letters="$letters${m[$num]}"
+        letters="$letters${numKey[$num]}"
     done
-    echo "${letters[*]}"
-}
-
-getWords(){
-    local regexString="\b${GAP}*\?"
-    for (( i=0; i<${#1}; i++ )); do
-        regexString=$regexString"${1:$i:1}\+${GAP}*"
-    done
-    regexString=$regexString"\b"
-    grep "$regexString" "${DICT}"
-    echo "$regexString"
 }
 
 expandPermutations(){
@@ -50,6 +38,15 @@ expandPermutations(){
     done
 }
 
+getWords(){
+    local regexString="\b${GAP}*\?"
+    for (( i=0; i<${#1}; i++ )); do
+        regexString=$regexString"${1:$i:1}\+${GAP}*"
+    done
+    regexString=$regexString"\b"
+    grep "$regexString" "${DICT}" | grep -v "'s"
+}
+
 main(){
     numToLetters
     expandPermutations
@@ -57,5 +54,9 @@ main(){
 
 main
 
-# echo "\b${GAP}\+${m[9]}"\+"${GAP}""${m[4]}"\+"${GAP}""${m[1]}"\+"${GAP}\b"
-echo "\b${GAP}*\?p\+${GAP}*r\+${GAP}*t\+${GAP}*\b" "${DICT}"
+# To do
+# * make searching case insensitive to give names, as well.
+# * stop `getWords` being called from within `expandPermutations
+# * 'usage' message on incorrect arguments
+# * build wrapper function that breaks long numbers into
+#   alternative chunks of numbers (too many results?)
