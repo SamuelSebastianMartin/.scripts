@@ -1,12 +1,23 @@
 #!/bin/bash
 
+# ┌────────────────┐
+# │Use: rememNo 235│
+# └────────────────┘
+
+# Pass it a number and it returns a list of
+# words that can be used to remember that
+# number.
+# Long numbers will have to be broken down
+# into chunks, manually.
+
 # To remember numbers
 # It searches the default dictionary for a mnemonic 
 # word or phrase
 
-DICT="/usr/share/dict/british-english" # dictionary
-GAP="[aeiouhvwxy]" # Regex to match non-key letters
-numKey=(           # array of all key letters
+declare -i NUM=${1}
+declare -r DICT="/usr/share/dict/british-english" # dictionary
+declare -r GAP="[aeiouhvwxy]" # Regex to match non-key letters
+declare -A numKey=(           # array of all key letters
     [0]="{s,z}"
     [1]="{d,t}"
     [2]="n"
@@ -18,10 +29,11 @@ numKey=(           # array of all key letters
     [8]="f"
     [9]="{b,p}"
 )
-NUM=${1}
 
 declare letters=""
 numToLetters(){
+    # breaks the number into digits, and saves
+    # the mnemonic of each digit in `letters`
     for (( i=0; i<${#NUM}; i++ )); do
         local num="${NUM:$i:1}"
         letters="$letters${numKey[$num]}"
@@ -29,8 +41,10 @@ numToLetters(){
 }
 
 expandPermutations(){
+    # expands the `letters` braces, eg n{p,b} -> np nb
     local IFS='' # set no gap between joined array items
-    permutations=$( echo "${letters[*]}" )
+    perms="echo ${letters[*]}"
+    permutations=$(eval "$perms")
     local IFS=' '
     for i in $permutations; do
         getWords "${i}"
@@ -38,6 +52,8 @@ expandPermutations(){
 }
 
 getWords(){
+    # inserts regex beween the consonents and
+    # then searches the dictionary for matches.
     local regexString="\b${GAP}*\?"
     for (( i=0; i<${#1}; i++ )); do
         regexString=$regexString"${1:$i:1}\+${GAP}*"
@@ -54,6 +70,7 @@ main(){
 main
 
 # To do
+# * make searching case insensitive to give names, as well.
 # * stop `getWords` being called from within `expandPermutations
 # * 'usage' message on incorrect arguments
 # * build wrapper function that breaks long numbers into
