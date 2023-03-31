@@ -14,7 +14,7 @@
 # It searches the default dictionary for a mnemonic 
 # word or phrase
 
-declare -i NUM=${1}
+declare -r NUM=${1} # can't be -i, as initial zeros are lost
 declare -r DICT="/usr/share/dict/british-english" # dictionary
 declare -r GAP="[aeiouhvwxy]" # Regex to match non-key letters
 declare -A numKey=(           # array of all key letters
@@ -56,7 +56,7 @@ getWords(){
     # then searches the dictionary for matches.
     local regexString="\b${GAP}*\?"
     for (( i=0; i<${#1}; i++ )); do
-        regexString=$regexString"${1:$i:1}\+${GAP}*"
+        regexString=$regexString"${1:$i:1}\+${GAP}\+"
     done
     regexString=$regexString"\b"
     grep -i "$regexString" "${DICT}" | grep -v "'s"
