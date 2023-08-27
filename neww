@@ -1,0 +1,54 @@
+#!/bin/bash
+
+## ┌─────────────────────────────────────────────────────┐
+## │                         new                         │
+## └─────────────────────────────────────────────────────┘
+
+## Opens a new file in vim with the day's date in the name.
+## `neww cat` -> 2023.08.23.cat.md
+## `neww cat ed` will open it in ed.
+
+# Default name if no argument is provided
+default_name="free"
+
+# Default editor to use
+editor="vim"
+
+# Check the number of arguments
+if [ $# -eq 0 ]; then
+    # No arguments provided, use default name
+    name="$default_name"
+elif [ $# -eq 1 ]; then
+    # One argument provided, use it as the name
+    name="$1"
+elif [ $# -eq 2 ] && [ "$2" == "ed" ]; then
+    # Two arguments provided, second argument is 'ed'
+    # Use the first argument as the name and set editor to 'ed'
+    name="$1"
+    editor="ed"
+else
+    # Invalid or too many arguments, display usage instructions
+    echo -e "\e[1;33mUsage:\e[0m $0 <name> [ed]"
+    echo -e "\e[1;33mOptions:\e[0m"
+    echo -e "  \e[1;33m<name>\e[0m  : The name for the file (default: 'free')"
+    echo -e "  \e[1;33med\e[0m    : Open the file in 'ed' instead of 'vim'"
+    exit 1
+fi
+
+# Get the current date in the format YYYY.MM.DD
+date=$(date +"%Y.%m.%d")
+
+# Create the file name using the date and provided name
+file_name="$date.$name.md"
+
+# Create an empty file with the generated name
+touch "$file_name"
+echo "File '$file_name' created."
+
+# Open the file in the selected editor
+if [ "$editor" == "vim" ]; then
+    vim "$file_name"
+else
+    ed "$file_name"
+fi
+
