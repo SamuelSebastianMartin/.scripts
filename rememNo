@@ -20,7 +20,7 @@ declare -r GAP="[aeiouhvwxy]" # Regex to match non-key letters
 declare -A numKey=(           # array of all key letters
     [0]="{s,z}"
     [1]="{d,t}"
-    [2]="n"
+    [2]="{n,ng}"
     [3]="m"
     [4]="r"
     [5]="l"
@@ -38,6 +38,7 @@ numToLetters(){
         local num="${NUM:$i:1}"
         letters="$letters${numKey[$num]}"
     done
+    echo "$letters"
 }
 
 expandPermutations(){
@@ -59,7 +60,7 @@ getWords(){
         regexString=$regexString"${1:$i:1}\+${GAP}\+"
     done
     regexString=$regexString"\b"
-    grep -i "$regexString" "${DICT}" | grep -v "'s"
+#    grep -i "$regexString" "${DICT}" | grep -v "'s"
 }
 
 main(){
