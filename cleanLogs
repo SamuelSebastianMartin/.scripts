@@ -12,7 +12,7 @@ temp_file=$(mktemp)
 
 # Function to list files
 list_files() {
-    for ext in log aux out
+    for ext in log aux out nav snm toc
     do
         for f in *."$ext"
         do
