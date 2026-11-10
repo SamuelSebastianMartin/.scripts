@@ -53,10 +53,10 @@ format_time() {
 
 for cycle in 1 2; do
     echo "Cycle $cycle of 2"
-    run_timer "Work" 1500
+    run_timer "Work time" 1500
     alert "Work finished. Take a 5-minute break."
 
-    run_timer "Break" 300
+    run_timer "Break time" 300
     alert "Break finished."
 done
 
